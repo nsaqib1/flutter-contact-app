@@ -25,16 +25,60 @@ class ContactsNotifier extends ChangeNotifier {
 
   Future<void> addContact(ContactModel contact) async {
     final prefs = await SharedPreferences.getInstance();
+
     contacts.add(contact);
     notifyListeners();
     prefs.setStringList(
-        'contacts',
-        contacts.map(
-          (e) {
-            return jsonEncode(
-              e.toJson(),
-            );
-          },
-        ).toList());
+      'contacts',
+      contacts.map(
+        (e) {
+          return jsonEncode(
+            e.toJson(),
+          );
+        },
+      ).toList(),
+    );
+  }
+
+  Future<void> editContact(ContactModel contact) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    contacts = contacts.map(
+      (e) {
+        if (contact.id == e.id) {
+          return contact;
+        } else {
+          return e;
+        }
+      },
+    ).toList();
+    notifyListeners();
+    prefs.setStringList(
+      'contacts',
+      contacts.map(
+        (e) {
+          return jsonEncode(
+            e.toJson(),
+          );
+        },
+      ).toList(),
+    );
+  }
+
+  Future<void> deleteContact(ContactModel contact) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    contacts.removeWhere((element) => element.id == contact.id);
+    notifyListeners();
+    prefs.setStringList(
+      'contacts',
+      contacts.map(
+        (e) {
+          return jsonEncode(
+            e.toJson(),
+          );
+        },
+      ).toList(),
+    );
   }
 }
