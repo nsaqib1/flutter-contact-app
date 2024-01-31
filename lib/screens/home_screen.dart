@@ -1,18 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_contact_app/notifiers/contacts_notifier.dart';
-import 'package:flutter_contact_app/pages/add_contact.dart';
+import 'package:flutter_contact_app/providers/contacts_provider.dart';
+import 'package:flutter_contact_app/screens/add_contact.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/contact_item.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final notifier = context.watch<ContactsNotifier>();
-    notifier.loadContacts();
+    final contactProvider = context.watch<ContactsProvider>();
+    contactProvider.loadContacts();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Contacts'),
@@ -30,13 +30,13 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: notifier.contacts.isEmpty
+      body: contactProvider.contacts.isEmpty
           ? const SizedBox()
           : ListView.builder(
               physics: const BouncingScrollPhysics(),
-              itemCount: notifier.contacts.length,
+              itemCount: contactProvider.contacts.length,
               itemBuilder: (context, index) {
-                return ContactItem(contact: notifier.contacts[index]);
+                return ContactItem(contact: contactProvider.contacts[index]);
               },
             ),
     );

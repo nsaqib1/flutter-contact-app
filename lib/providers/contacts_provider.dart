@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_contact_app/models/contact_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ContactsNotifier extends ChangeNotifier {
+class ContactsProvider extends ChangeNotifier {
   List<ContactModel> contacts = [];
 
   Future<void> loadContacts() async {

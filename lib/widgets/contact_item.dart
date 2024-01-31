@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_contact_app/notifiers/contacts_notifier.dart';
-import 'package:flutter_contact_app/pages/edit_contact.dart';
+import 'package:flutter_contact_app/providers/contacts_provider.dart';
+import 'package:flutter_contact_app/screens/edit_contact.dart';
 import 'package:provider/provider.dart';
 
 import '../models/contact_model.dart';
@@ -44,7 +44,7 @@ class ContactItem extends StatelessWidget {
     }
     return Slidable(
       endActionPane: ActionPane(
-        motion: BehindMotion(),
+        motion: const BehindMotion(),
         children: [
           SlidableAction(
             onPressed: (context) {
@@ -61,7 +61,7 @@ class ContactItem extends StatelessWidget {
           ),
           SlidableAction(
             onPressed: (context) {
-              context.read<ContactsNotifier>().deleteContact(contact);
+              context.read<ContactsProvider>().deleteContact(contact);
             },
             foregroundColor: Colors.red,
             backgroundColor: Colors.blueGrey.shade100,

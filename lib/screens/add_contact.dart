@@ -1,22 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_contact_app/models/contact_model.dart';
+import 'package:flutter_contact_app/providers/contacts_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../models/contact_model.dart';
-import '../notifiers/contacts_notifier.dart';
-
-class EditContact extends StatefulWidget {
-  const EditContact({
-    super.key,
-    required this.contact,
-  });
-
-  final ContactModel contact;
+class AddContact extends StatefulWidget {
+  const AddContact({super.key});
 
   @override
-  State<EditContact> createState() => _EditContactState();
+  State<AddContact> createState() => _AddContactState();
 }
 
-class _EditContactState extends State<EditContact> {
+class _AddContactState extends State<AddContact> {
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -25,13 +19,11 @@ class _EditContactState extends State<EditContact> {
     if (!_formKey.currentState!.validate()) {
       return;
     }
-
     final newContact = ContactModel(
-      uid: widget.contact.id,
       name: _nameController.text,
       phone: _phoneController.text,
     );
-    context.read<ContactsNotifier>().editContact(newContact);
+    context.read<ContactsProvider>().addContact(newContact);
     FocusScope.of(context).unfocus();
 
     Navigator.pop(context);
@@ -42,13 +34,6 @@ class _EditContactState extends State<EditContact> {
       return 'Field cannot be empty!';
     }
     return null;
-  }
-
-  @override
-  void initState() {
-    _nameController.value = TextEditingValue(text: widget.contact.name);
-    _phoneController.value = TextEditingValue(text: widget.contact.phone);
-    super.initState();
   }
 
   @override
@@ -65,7 +50,7 @@ class _EditContactState extends State<EditContact> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Edit This Contact'),
+          title: const Text('Add New Contact'),
         ),
         body: Padding(
           padding: const EdgeInsets.all(20),
@@ -91,9 +76,12 @@ class _EditContactState extends State<EditContact> {
                   ),
                 ),
                 const SizedBox(height: 40),
-                ElevatedButton(
-                  onPressed: () => _onSave(context),
-                  child: const Text('Save'),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () => _onSave(context),
+                    child: const Text('Save'),
+                  ),
                 ),
               ],
             ),
